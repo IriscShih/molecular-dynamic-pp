@@ -1,0 +1,704 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<style>
+
+.link line {
+  stroke: #696969;
+}
+
+.link line.separator {
+  stroke: #fff;
+  stroke-width: 2px;
+}
+
+.node circle {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+  pointer-events: none;
+}
+
+</style>
+
+<body style="opacity: 0">
+<script src="http://d3js.org/d3.v2.min.js?2.9.6"></script>
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+    <aside class="gdbar"><img src="images/log.png"></aside>
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+    </hgroup>
+  </slide>
+
+  <slide>
+  <h1 class="black">Agenda</h1><br>
+
+    <article class="smaller">
+    <div style="float:left">
+      <ul>
+      <li>Introduction</li>
+      <li>Why Molecular Dynamics?</li>
+      <li>MD Basic Process</li>
+      <li>Classical Mechnics</li>
+      <li>Interaction Model</li>
+      <li>Force Field</li>
+      <li>Integration Algorithm</li>
+      <li>Boundary Condition</li>
+      <li>Quantum Mechanics</li>
+      <li>Simulation</li>
+      <li>Summary</li>
+      </ul>
+    </div>
+    <div style="float:right" class=iris> </div>
+        <footer class="source">"All of today's DNA, strung through all the cells of the earth, is simply an extension and elaboration of [the] first molecule. - Lewis Thomos.</footer>
+
+    </article>
+
+    
+  </slide>
+
+
+  
+ 
+
+  <slide>
+  <h1 class="black">Introduction</h1><br>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px">
+      <h1>Molecular Dynamics (MD)</h1> <br>
+      <ul>
+      <li> Simulation Technique</li>
+      <li> Dynamic motion of a group of particles (e.g. atoms) </li>
+      <li> Solving the Newton's equation.</li>
+      <img style="float:center" width="300px" heigth="200px"  src="iris_pics/Newtons.png"><br>
+      </ul>
+    </div><br><br><br>
+
+      <div style="float:right" width="300px">
+        <img style="float:right; margin-right:80px" width="300px" heigth="200px"  src="iris_pics/MD_animation.gif"><br>
+      </div>
+    <footer class="source">Source: http://www.cs.berkeley.edu/~bvs/cs267_hw2/animation.gif</footer>
+    </article>
+
+  </slide>
+
+  <slide>
+  <h1 class="black">Why Molecular Dynamics?</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><li>An example of SH2 which is a protein domain involved in protein-protein interactions.</li><br>
+      <video style="float:center;margin-left: 200px" autoplay loop muted width="600px" heigth="500px"  src="iris_pics/Visualizing the Induced Binding of SH2-Phosphopeptide (Supporting Video 1)-V0Z52u8h2es.mp4">
+      </ul>
+    </div>
+    <footer class="source">Source: https://www.youtube.com/watch?v=V0Z52u8h2es</footer>
+    </article>
+  </slide>
+
+  <slide>
+  <h1 class="black">MD Basic Process</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><br><br>
+      <!-- <li>An example of SH2 which is a protein domain involved in protein-protein interactions.</li><br> -->
+      <img style="float:center;margin-left: 100px" width="800px" heigth="800px"  src="iris_pics/BasicProcess.png"><br>
+      <br>
+      </ul>
+    </div>
+    <footer class="source">Source: https://nanohub.org/resources/7573/download/Martini_L1_Introduction.pdf</footer>
+    </article>
+  </slide>
+
+  <slide>
+  <h1 class="black">MD Basic Process</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><br><br>
+      <!-- <li>An example of SH2 which is a protein domain involved in protein-protein interactions.</li><br> -->
+      <img style="float:center;margin-left: 100px" width="800px" heigth="800px"  src="iris_pics/BasicProcess2.png"><br>
+      </ul>
+    </div>
+    <footer class="source">Source: https://nanohub.org/resources/7573/download/Martini_L1_Introduction.pdf</footer>
+    </article>
+  </slide>
+
+   <slide>
+  <h1 class="black">Molecular Modeling</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><li>.</li><br>
+      <img style="float:left" width="950px" heigth="900px"  src="iris_pics/modelling.png">
+      </ul>
+    </div>
+    <footer class="source">Source: https://www.youtube.com/watch?v=V0Z52u8h2es</footer>
+    </article>
+  </slide>
+
+  <slide>
+    <h1 class="black">Classical Mechanics</h1>
+      <article> 
+      <div>
+      <div style="float:left" width="300px"><br>
+        <ul><li>Force</li><br>
+        <img style="float:center;margin-left: 100px" width="200px" heigth="200px"  src="iris_pics/F.png"><br>
+        </ul>
+      </div>
+      <footer class="source">Source: http://xray.bmc.uu.se/gerard/embo2001/modval/01.html</footer>
+      </article>
+  </slide>
+  <slide>
+    <h1 class="black">Classical Mechanics</h1>
+      <article> 
+      <div>
+      <div style="float:left" width="300px"><br>
+        <ul><li>Force &#65515; Acceleration</li><br>
+        <img style="float:center;margin-left: 100px" width="200px" heigth="200px"  src="iris_pics/F.png"><br>
+        <img style="float:center;margin-left: 100px" width="180px" heigth="180px"  src="iris_pics/a.png">
+      </ul>
+      </div>
+      <footer class="source">Source: http://xray.bmc.uu.se/gerard/embo2001/modval/01.html</footer>
+      </article>
+  </slide>
+  <slide>
+    <h1 class="black">Classical Mechanics</h1>
+      <article> 
+      <div>
+      <div style="float:left" width="300px"><br>
+        <ul><li>Force &#65515; Acceleration &#65515; Velocity</li><br>
+        <img style="float:center;margin-left: 100px" width="200px" heigth="200px"  src="iris_pics/F.png"><br>
+        <img style="float:center;margin-left: 100px" width="180px" heigth="180px"  src="iris_pics/a.png"><br>
+        <img style="float:center;margin-left: 100px" width="180px" heigth="180px"  src="iris_pics/v.png">
+      </ul>
+      </div>
+      <footer class="source">Source: http://xray.bmc.uu.se/gerard/embo2001/modval/01.html</footer>
+      </article>
+  </slide>
+  <slide>
+    <h1 class="black">Classical Mechanics</h1>
+      <article> 
+      <div>
+      <div style="float:left" width="300px"><br>
+        <ul><li>Force &#65515; Acceleration &#65515; Velocity &#65515; Position</li><br>
+        <img style="float:center;margin-left: 100px" width="200px" heigth="200px"  src="iris_pics/F.png"><br>
+        <img style="float:center;margin-left: 100px" width="180px" heigth="180px"  src="iris_pics/a.png"><br>
+        <img style="float:center;margin-left: 100px" width="180px" heigth="180px"  src="iris_pics/v.png"><br>
+        </ul>
+      </div>
+      <div style="float:right" width="300px"><br><br><br><br><br>
+        <img style="float:right;margin-right: 150px" width="300px" height="300px" src="iris_pics/position.png">
+      </div>
+      <footer class="source">Source: http://xray.bmc.uu.se/gerard/embo2001/modval/01.html</footer>
+      </article>
+  </slide>
+
+   <slide>
+    <h1 class="black">Interaction Model</h1>
+    <article class="smaller">
+    <div>
+    <div style="float:left" width="300px"><br>
+    <ul><li>Interaction force is the spacial derivative of the <b>Potential Energy</b>.</li></ul><br><br>
+      <img style="float:center;margin-left: 80px" width="850px" heigth="850px"  src="iris_pics/Model.png">
+    </div>
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+  <slide>
+    <h1 class="black">Interaction Model</h1>
+    <article class="smaller">
+    <div>
+    <div style="float:left" width="300px"><br>
+    <ul><li>Interaction force is the spacial derivative of the <b>Potential Energy</b>.</li></ul><br><br>
+      <img style="float:center;margin-left: 80px" width="850px" heigth="850px"  src="iris_pics/Model2.png">
+    </div>
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+  <slide>
+    <h1 class="black">Force Field</h1>
+    <article class="smaller">
+    <div>
+    <br>
+    <ul><li>The form and parameters of mathematical functions used to describe the <b>Potential Energy</b> of a system of particles (typically molecules and atoms)</li></ul>
+    <div style="float:left" width="100%">
+    <img style="float:center;margin-left: 80px" width="400px" heigth="400px"  src="iris_pics/Energy.gif">
+    </div>
+    <div style="right">
+      <img style="float:right;margin-right: 100px" width="250px" heigth="200px"  src="iris_pics/length.jpg">
+      <img style="float:right;margin-right: 100px" width="250px" heigth="200px"  src="iris_pics/Angle.png">
+    </div>
+    </div>
+
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+  
+  <slide>
+    <h1 class="black">Force Field</h1>
+    <article class="smaller">
+    <div>
+    <br>
+    <ul><li>The form and parameters of mathematical functions used to describe the <b>Potential Energy</b> of a system of particles (typically molecules and atoms)</li></ul>
+    <div style="float:left" width="100%">
+    <img style="float:center;margin-left: 80px" width="400px" heigth="400px"  src="iris_pics/Energy.gif">
+    </div>
+    <div style="right"><br><br><br>
+      <img style="float:right;margin-right: 120px" width="300px" heigth="300px"  src="iris_pics/Torsion.png">
+    </div>
+    </div>
+
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+  <slide>
+    <h1 class="black">Force Field</h1>
+    <article class="smaller">
+    <div>
+    <div style="float:left" width="100%"><br>
+    <ul><li>The form and parameters of mathematical functions used to describe the <b>Potential Energy</b> of a system of particles (typically molecules and atoms)</li></ul><br><br>
+      <img style="float:left;margin-left: 100px" width="300px" heigth="300px"  src="iris_pics/nonBond.png">
+      <img style="float:center" width="250px" heigth="250px"  src="iris_pics/Nonbond.jpg"><br>
+      <!-- <img style="float:right;margin-right: 100px" width="210px" heigth="210px"  src="iris_pics/Coulomb_Law.png"> -->
+    </div>
+    
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+   <slide>
+    <h1 class="black">Force Field</h1>
+    <article class="smaller">
+    <div>
+    <div style="float:left" width="100%"><br>
+    <ul><li>The form and parameters of mathematical functions used to describe the <b>Potential Energy</b> of a system of particles (typically molecules and atoms)</li></ul><br><br>
+      <img style="float:left;margin-left: 100px" width="300px" heigth="300px"  src="iris_pics/nonBond.png">
+      <img style="float:center" width="250px" heigth="250px"  src="iris_pics/Nonbond.jpg"><br>
+      <img style="float:right;margin-right: 100px" width="210px" heigth="210px"  src="iris_pics/Coulomb_Law.png">
+    </div>
+    
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+  <!-- <slide>
+    <h1 class="black">Effect of Cutoff</h1>
+    <article class="smaller"><br>
+    <div style="float:left" width="300px">
+      <ul><li>Three cutoff scheme : </li></ul>
+      <ul><ul>
+      <li>Strict / Druncation</li>
+      <li>Shift</li>e
+      <li>SWitch</li></ul></ul>
+      <img style="float:left;margin-left: 200px" width="700px" heigth="700px"  src="iris_pics/cutoff.png">
+    </div><br>
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide> -->
+
+  <slide>
+    <h1 class="black">Optimization Techniques</h1>
+    <article class="smaller"><br><br>
+  
+    <div style="float:center" width="300px"><br>
+      <img style="float:left;margin-left: 150px" width="500px" heigth="500px"  src="iris_pics/OptimizationAlg.png">
+      <ul><li>Steepest Descent </li></ul>
+    </div>
+    </article>
+    <footer class="source">Source: http://en.wikipedia.org/wiki/Force_field_(chemistry)#mediaviewer/File:MM_PEF.png</footer>
+  </slide>
+
+
+  <slide>
+  <h1 class="black">MD Basic Process</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><br><br>
+      <!-- <li>An example of SH2 which is a protein domain involved in protein-protein interactions.</li><br> -->
+      <img style="float:center;margin-left: 100px" width="800px" heigth="800px"  src="iris_pics/BasicProcess.png"><br>
+      </ul>
+    </div>
+    <footer class="source">Source: https://nanohub.org/resources/7573/download/Martini_L1_Introduction.pdf</footer>
+    </article>
+  </slide>
+
+  <slide>
+  <h1 class="black">MD Basic Process</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><br><br>
+      <!-- <li>An example of SH2 which is a protein domain involved in protein-protein interactions.</li><br> -->
+      <img style="float:center;margin-left: 100px" width="800px" heigth="800px"  src="iris_pics/BasicProcess3.png"><br>
+      </ul>
+    </div>
+    <footer class="source">Source: https://nanohub.org/resources/7573/download/Martini_L1_Introduction.pdf</footer>
+    </article>
+  </slide>
+
+  <slide>
+  <h1 class="black">Integration Algorithm</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px">
+      <ul>
+      <ul><li>There is no analytical solution to the equations of motion which must be solved numerically</li></ul><br>
+      <img style="float:center;margin-left: 150px" width="700px" heigth="700px"  src="iris_pics/Algorithm1.png"><br>
+      </ul>
+    </div>
+    <footer class="source">Source: http://reaktiveplasmen.rub.de/files/lehre/md/01-1.pdf</footer>
+    </article>
+  </slide>
+
+  <slide>
+  <h1 class="black">Integration Algorithm</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px">
+      <ul>
+      <ul><li>There is no analytical solution to the equations of motion which must be solved numerically</li></ul><br>
+      <img style="float:center;margin-left: 150px" width="700px" heigth="700px"  src="iris_pics/Algorithm2.png"><br>
+      </ul>
+    </div>
+    <footer class="source">Source: http://reaktiveplasmen.rub.de/files/lehre/md/01-1.pdf</footer>
+    </article>
+  </slide>
+
+ 
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Boundary Condition</h1>
+    </hgroup>
+    <article class="smaller">
+      <li><b>No boundaries</b></li><br>
+      <ul><ul>
+      <li>Free boundaries condition</li>
+      <li>Ex: Droplet of liquid, protein in vacuum;</li>
+      </ul></ul>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Boundary Condition</h1>
+    </hgroup>
+    <article class="smaller">
+      <li>No boundaries</li><br>
+      <li><b>Fixed boundaries</b></li><br>
+      <ul><ul>
+      <li>Rigid boundaries condition</li>
+      <li>In principle we need a ‘sacrificial region’ between the part of the system under study and a fixed boundary</li>
+      <img style="float:center;margin-left: 200px" width="500px" heigth="500px"  src="iris_pics/FixedBoundary.png">
+      </ul></ul>
+    </article>
+    <footer class="source">Source: https://nanohub.org/resources/7577/download/Martini_L5_BoundaryConditions.pdf </footer>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Boundary Condition</h1>
+    </hgroup>
+    <article class="smaller">
+      <li>No boundaries</li><br>
+      <li>Fixed boundaries</li><br>
+      <li><b>Periodic boundaries</b></li><br>
+      <img style="float:right; margin-right:100px" width="300px" heigth="300px"  src="iris_pics/Periodic.jpg">
+      <ul><ul><ul>
+      <li>The most widely used</li>
+      <li>Simulated interactions of "bulk" material</li>
+      <li>Out one side, in the other</li></ul></ul></ul>
+    </article>
+    <footer class="source">Source: http://isaacs.sourceforge.net/phys/pbc.html </footer>
+  </slide>
+
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Quantum mechanics</h1>
+    </hgroup>
+    <article class="smaller">
+      <ul><ul>
+      <li>Solve the limitation of Classical Mechanics</li>
+      <li>Offers the principally most accurate description of intra- and intermolecular interactions. </li></ul>
+    </article>
+    <!-- <hgroup>
+      <h1 class="black">Classical mechanics vs. Quantum mechanics</h1>
+    </hgroup> -->
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Quantum mechanics</h1>
+    </hgroup>
+    <article class="smaller">
+      <ul><ul>
+      <li>Solve the limitation of Classical Mechanics</li>
+      <li>Offers the principally most accurate description of intra- and intermolecular interactions. </li></ul>
+    </article><br>
+    <hgroup>
+      <h1 class="black">Classical mechanics vs. Quantum mechanics</h1><br><br>
+      <article class="flexbox vcenter">
+      <TABLE border="5px"    style="width:75%"  cellpadding="4px" cellspacing="3px">
+        <TR>
+          <TH><b>Classical Mechanics</b></TH>
+          <TH><b>Quantum Mechanics</b></TH> 
+        </TR>
+        <TR>
+          <TD>Atom as sphere (point charge & mass)</TD>
+          <TD>Electrons</TD>
+        </TR>
+        <TR>
+          <TD>Newton's Law</TD>
+          <TD>Uncertainty Principle & Probability</TD> 
+        </TR>
+        <TR>
+          <TD>Less computational complexity</TD>
+          <TD>High computational complexity</TD> 
+        </TR>
+        </TABLE>
+        </article>
+    </hgroup>
+  </slide>
+ 
+  
+  <slide>
+     <h1 class="black">Simulation Example</h1>
+    <article class="smaller"> 
+    <div>
+    <div style="float:left" width="300px"><br>
+      <ul><li>Water Channels in Cell Membranes</li>
+      <video style="float:  center;margin-left: 100px" autoplay loop muted width="800px" heigth="800px"  src="iris_pics/Water Channels in Cell Membranes-GSi5-y6NHjY.mp4">
+      </ul>
+    </div>
+    <footer class="source">Source: https://www.youtube.com/watch?v=V0Z52u8h2es</footer>
+    </article>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Molecular Dynamic Software</h1>
+    </hgroup>
+      <article class="flexbox vcenter">
+      <ul>
+        <li><b>CHARMM</b></li>
+        <li>Amber</li>
+        <li>GROMOS</li>
+        <li>Gromacs</li>
+        <li>NAMD</li>
+      </ul>
+       <!-- <TABLE border="5px"    style="width:75%"  cellpadding="4px" cellspacing="3px">
+        <TR>
+          <TH><b>Package name</b></TH>
+          <TH><b>Supprot Force-field</b></TH> 
+        </TR>
+        <TR>
+          <TD>CHARMM</TD>
+          <TD>CHARMM (E / I; AA / UA), Amber</TD> 
+        </TR>
+        <TR>
+          <TD>Amber</TD>
+          <TD>Amber (E / I ; AA)</TD> 
+        </TR>
+        <TR>
+          <TD>GROMOS</TD>
+          <TD>Gromos (E / vacuum ; UA)</TD> 
+        </TR>
+        <TR>
+          <TD>Gromacs</TD>
+          <TD>Amber, Gromos, OPLS - (all E)</TD> 
+        </TR>
+        <TR>
+          <TD>NAMD</TD>
+          <TD>CHARMM, Amber, Gromos, ...</TD> 
+        </TR>
+        </TABLE> -->
+    </article>
+    <hgroup>
+    </hgroup>
+  </slide>
+
+  <slide>
+    <hgroup>
+      <h1 class="black">Summary</h1>
+    </hgroup>
+    <article class="smaller">
+    <div style="float:left">
+      <ul><ul><ul><ul>
+      <li>Why molecular dynamic simulation?</li>
+      <li>Why classical mechanics?</li>
+      <li>How molecule modelled?</li>
+      <li>What's more to know?</li>
+      </ul></ul></ul></ul>
+      </div>
+      <div style="float:right" class=iris> </div>
+    </article>
+  </slide>
+  
+
+  <slide class="thank-you-slide segue nobackground">
+    <aside class="gdbar right"><img src="images/log.png"></aside>
+    <article class="flexbox vleft auto-fadein">
+      <h2>&lt;Thank You!&gt;</h2>
+      <p>Questions?</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+   <script>
+
+var width = 500,
+    height = 500;
+
+var color = d3.scale.category20();
+
+var radius = d3.scale.sqrt()
+    .range([0, 6]);
+
+var svg = d3.selectAll(".iris").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var force = d3.layout.force()
+    .size([width, height])
+    .charge(-400)
+    .linkDistance(function(d) { return radius(d.source.size) + radius(d.target.size) + 20; });
+
+var vis = function(graph) {
+  force
+      .nodes(graph.nodes)
+      .links(graph.links)
+      .on("tick", tick)
+      .start();
+
+  var link = svg.selectAll(".link")
+      .data(graph.links)
+    .enter().append("g")
+      .attr("class", "link");
+
+  link.append("line")
+      .style("stroke-width", function(d) { return (d.bond * 2 - 1) * 2 + "px"; });
+
+  link.filter(function(d) { return d.bond > 1; }).append("line")
+      .attr("class", "separator");
+
+  var node = svg.selectAll(".node")
+      .data(graph.nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .call(force.drag);
+
+  node.append("circle")
+      .attr("r", function(d) { return radius(d.size); })
+      .style("fill", function(d) { return color(d.atom); });
+
+  node.append("text")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "middle")
+      .text(function(d) { return d.atom; });
+
+  function tick() {
+    link.selectAll("line")
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  }
+};
+
+var graph = 
+{
+  "nodes": [
+    {"atom": "C", "size": 12},
+    {"atom": "C", "size": 12},
+    {"atom": "C", "size": 12},
+    {"atom": "N", "size": 14},
+    {"atom": "H", "size": 1},
+    {"atom": "O", "size": 16},
+    {"atom": "O", "size": 16},
+    {"atom": "H", "size": 1},
+    {"atom": "H", "size": 1},
+    {"atom": "H", "size": 1},
+    {"atom": "H", "size": 1},
+    {"atom": "H", "size": 1},
+    {"atom": "H", "size": 1}
+  ],
+  "links": [
+    {"source": 0, "target": 1,  "bond": 1},
+    {"source": 1, "target": 2,  "bond": 1},
+    {"source": 1, "target": 3,  "bond": 1},
+    {"source": 2, "target": 5,  "bond": 2},
+    {"source": 2, "target": 6,  "bond": 1},
+    {"source": 1, "target": 4,  "bond": 1},
+    {"source": 3, "target": 10, "bond": 1},
+    {"source": 3, "target": 11, "bond": 1},
+    {"source": 0, "target": 7,  "bond": 1},
+    {"source": 0, "target": 8,  "bond": 1},
+    {"source": 0, "target": 9,  "bond": 1},
+    {"source": 5, "target": 12, "bond": 1}
+  ]
+};
+
+vis(graph);
+
+</script>
+
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
